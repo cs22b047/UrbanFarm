@@ -3,10 +3,10 @@ import { Routes, Route} from 'react-router-dom';
 import './App.css';
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard';
-
+import useToken from './useToken';
 function App() {
 
-  const [token, setToken] = useState();
+  const { token, setToken } = useToken();
 
   if (!token) {
     return <Login setToken={setToken} />
@@ -14,9 +14,9 @@ function App() {
 
   return (
     <div className="wrapper">
-      <h1>Application</h1>
+      <h1>Hello {token.split('#')[1]}!</h1>
       <Routes>
-        <Route path='dashboard/' element={<Dashboard/>}/>
+        <Route path='/' element={<Dashboard/>}/>
       </Routes>
     </div>
   );
