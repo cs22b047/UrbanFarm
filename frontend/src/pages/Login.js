@@ -52,7 +52,7 @@ export default function Login({ setToken }) {
             <form className=''>
                 <label>
                     <p>Username</p>
-                    <input type="text" onChange={e => setUserName(e.target.value)} />
+                    <input className='w-52 h-40' type="text" onChange={e => setUserName(e.target.value)} />
                 </label>
                 <label>
                     <p>Password</p>
