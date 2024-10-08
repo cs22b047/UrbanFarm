@@ -8,6 +8,7 @@ import './pages/dashboard.css';
 import logo from './assets/logo.jpeg';
 import Chatbot from './components/chat-bot';
 import PhotoUpload from './components/UploaPhoto';
+import ARScene from './components/ARScene';
 
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
         <ul class="main-nav-list">
           <li><Link to='/'><a class="main-nav-link" href="#pricing">Dashboard</a></Link></li>
           <li><Link to='/upload_image'><a class="main-nav-link" href="#how">Design Farm</a></Link></li>
-          <li><a class="main-nav-link" href="#meals">Augumented Reality</a></li>
+          <li><Link to='/ar'><a class="main-nav-link" href="#how">Augumented Reality</a></Link></li>
           <li>
             <a class="main-nav-link" href="#testimonials">Blog</a>
           </li>
@@ -38,6 +39,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Dashboard />} />
         <Route path='/upload_image' element={<PhotoUpload />} />
+        <Route path='/ar' element={<ARScene />} />
       </Routes>
     </div >
   );
