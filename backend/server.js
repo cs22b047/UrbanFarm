@@ -61,7 +61,7 @@ app.use('/register-user', (req, res, next) => {
 
 //chat bot
 
-const OPENAI_API_KEY = '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';
+const OPENAI_API_KEY = '';
 
 // Function to search for keywords in the files
 function searchFiles(query) {
