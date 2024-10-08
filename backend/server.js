@@ -11,7 +11,13 @@ const path = require('path');
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:3000/', // Replace with your actual frontend URL
+    optionsSuccessStatus: 200,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 
