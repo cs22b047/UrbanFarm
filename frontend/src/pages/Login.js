@@ -54,7 +54,12 @@ export default function Login({ setToken }) {
     }
     return (
         <div className=''>
-            <h1 className='text-center mt-56'>WELCOME</h1>
+            <head>
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+                <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet" />
+            </head>
+            <h1 className='text-center mt-56' style={{ fontFamily: "Roboto", fontWeight: "700", fontStyle: "normal" }}>WELCOME</h1>
             <form className='w-1/4 mx-auto' onSubmit={handleLogin} style={{ display: (registerState ? "none" : "") }}>
                 <input type="text" placeholder="username" className="w-full rounded-md border-gray-100 p-3 mt-4 mb-3 box-border" onChange={e => setUserName(e.target.value)} required />
                 <input type="password" placeholder="password" className="w-full rounded-md border-gray-100 p-3 box-border mb-3" onChange={e => setPassword(e.target.value)} required />
@@ -75,7 +80,7 @@ export default function Login({ setToken }) {
                     <input type="password" placeholder="password" className="w-full rounded-md border-gray-100 p-3 shadow-none mb-3" onChange={e => setPassword(e.target.value)} required />
                 </div>
                 <div>
-                    <input type="text" placeholder="conform password" className="w-full rounded-md border-gray-100 p-3 shadow-none mt-4 mb-3" />
+                    <input type="text" placeholder="conform password" className="w-full rounded-md border-gray-100 p-3 shadow-none mt-4 mb-3" required />
                 </div>
                 <div className="flex justify-center">
                     <button type="submit" className='rounded-md w-[100px] p-2 bg-green-500'>Register</button>
