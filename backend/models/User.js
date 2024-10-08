@@ -1,9 +1,11 @@
 const getDb = require('../util/database').getDb;
 
 class User {
-    constructor(username, password) {
+    constructor(username, password,name) {
         this.username = username;
         this.password = password;
+        this.name = name;
+
     }
     createUser() {
         const db = getDb();

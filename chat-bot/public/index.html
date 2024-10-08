@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chatbot</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #4a90e2;
+        }
+
+        #chatbox {
+            border: 1px solid #ddd;
+            padding: 15px;
+            width: 100%;
+            max-width: 400px;
+            height: 400px;
+            overflow-y: scroll;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            max-width: 80%;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .user {
+            background-color: #e1f5fe;
+            color: #0277bd;
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .bot {
+            background-color: #dcedc8;
+            color: #558b2f;
+            text-align: left;
+            margin-right: auto;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 70px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        button:hover {
+            background-color: #357ab8;
+        }
+
+        #chatbox::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #chatbox::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 4px;
+        }
+
+        #chatbox::-webkit-scrollbar-track {
+            background-color: #f0f4f7;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Chatbot</h1>
+        <div id="chatbox"></div>
+        <div>
+            <input type="text" id="userInput" placeholder="Type your message..." />
+            <button id="sendBtn">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const chatbox = document.getElementById('chatbox');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        sendBtn.addEventListener('click', () => {
+            const message = userInput.value;
+            if (message.trim()) {
+                addMessage('user', message);
+                userInput.value = '';
+
+                fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    addMessage('bot', data.reply);
+                });
+            }
+        });
+
+        function addMessage(sender, text) {
+            const div = document.createElement('div');
+            div.className = 'message ' + sender;
+            div.innerText = (sender === 'user' ? 'You: ' : 'Bot: ') + text;
+            chatbox.appendChild(div);
+            chatbox.scrollTop = chatbox.scrollHeight; // Scroll to bottom
+        }
+    </script>
+</body>
+</html>
