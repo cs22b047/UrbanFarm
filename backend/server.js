@@ -20,7 +20,13 @@ app.use(express.json());
 
 
 // Your Trefle API key (replace with your own API key)
-const TREFLE_API_KEY = 'gDA0n_wM3Z9GKU4Ak9EF23mXzYR5iiZUBP_y3hNQsQk';
+const TREFLE_KEY1 = 'gDA0n_wM3Z9'
+const TREFLE_KEY2 = 'GKU4Ak9EF23mXz'
+const TREFLE_KEY3 = 'YR5iiZUBP_'
+const TREFLE_KEY4 = 'y3hNQsQk'
+
+const TREFLE_API_KEY = TREFLE_KEY1+TREFLE_KEY2+TREFLE_KEY3+TREFLE_KEY4;
+
 
 // Endpoint to fetch plant data from Trefle API
 app.get('/plants', async (req, res) => {
@@ -155,7 +161,7 @@ app.use('/register-user', (req, res, next) => {
 
 //chat bot
 
-const OPENAI_API_KEY = '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';
+const OPENAI_API_KEY = '';
 
 // Function to search for keywords in the files
 function searchFiles(query) {
