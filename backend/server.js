@@ -1,24 +1,112 @@
 const getDb = require('./util/database').getDb;
 const express = require('express');
 const User = require('./models/User');
+const Blog = require('./models/Blog');
 const mongoConnect = require('./util/database').mongoConnect;
 const cors = require('cors');
+const multer = require('multer');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');  // Import uuid for unique filenames
 
 
 const app = express();
 
-const corsOptions = {
-    origin: 'http://localhost:3000/', // Replace with your actual frontend URL
-    optionsSuccessStatus: 200,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
+
+
+
+// Your Trefle API key (replace with your own API key)
+const TREFLE_API_KEY = 'gDA0n_wM3Z9GKU4Ak9EF23mXzYR5iiZUBP_y3hNQsQk';
+
+// Endpoint to fetch plant data from Trefle API
+app.get('/plants', async (req, res) => {
+    try {
+        // Example request to fetch plant data from Trefle API
+        const response = await axios.get('https://trefle.io/api/v1/plants', {
+            params: {
+                'filter[distribution]': 'asia-tropical',
+                token: TREFLE_API_KEY,
+                // page_size: 1 
+            }
+        });
+
+        // Return the data to the client
+        res.json(response.data.data);
+    } catch (error) {
+        console.error('Error fetching plants from Trefle API:', error);
+        res.status(500).json({ error: 'Failed to retrieve plant data from Trefle API.' });
+    }
+});
+
+// Set up multer for file upload
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');  // Specify the folder to store images
+    },
+    filename: (req, file, cb) => {
+        const uniqueName = uuidv4() + path.extname(file.originalname); // Generate unique filename
+        cb(null, uniqueName);  // Save file with unique name
+    }
+});
+
+const upload = multer({ storage: storage });
+
+// Add blog route (with file upload)
+app.post('/add-blog', upload.single('photo'), (req, res) => {
+    const { title, content, author } = req.body;
+    const photoPath = req.file ? `/uploads/${req.file.filename}` : null;
+
+    if (!title || !content || !photoPath) {
+        return res.status(400).json({ message: 'Title, content, and photo are required.' });
+    }
+
+    const blog = new Blog(title, content, photoPath, author);
+    blog.save()
+        .then(result => {
+            res.json({ message: 'Blog created successfully!' });
+        })
+        .catch(err => {
+            console.error('Error saving blog:', err);
+            res.status(500).json({ message: 'Failed to create blog.' });
+        });
+});
+
+app.get('/blogs', (req, res) => {
+    const searchQuery = req.query.search;
+
+    if (searchQuery) {
+        // Fetch blogs that match the search query in their content
+        Blog.fetchByMatchingTitle(searchQuery)
+            .then(blogs => res.json(blogs))
+            .catch(err => {
+                console.error('Error fetching blogs:', err);
+                res.status(500).json({ message: 'Failed to retrieve matching blogs.' });
+            });
+    } else {
+        // Fetch all blogs if no search query is provided
+        Blog.fetchAll()
+            .then(blogs => res.json(blogs))
+            .catch(err => {
+                console.error('Error fetching blogs:', err);
+                res.status(500).json({ message: 'Failed to retrieve blogs.' });
+            });
+    }
+});
+
+app.get('/get-blog', (req, res) => {
+    const blogId = req.query.id;
+    Blog.findById(blogId)
+        .then(blog =>{ res.json(blog)})
+        .catch(err => {
+            console.error('Error fetching blog:', err);
+            res.status(500).json({ message: 'Failed to retrieving blog.' });
+        });
+
+})
 
 
 app.use('/auth-user', (req, res, next) => {
@@ -49,12 +137,12 @@ app.use('/register-user', (req, res, next) => {
     getDb().collection('users').findOne({ username: username })
         .then(result => {
             if (result) {
-                res.json({ message: 'Username already exists' , token: 409})
+                res.json({ message: 'Username already exists', token: 409 })
             } else {
-                const user = new User(username, password,name);
+                const user = new User(username, password, name);
                 user.createUser();
                 console.log("user cerated")
-                res.json({ message: 'User Created!',token: 200})
+                res.json({ message: 'User Created!', token: 200 })
             }
             next();
         })
@@ -67,7 +155,7 @@ app.use('/register-user', (req, res, next) => {
 
 //chat bot
 
-const OPENAI_API_KEY = '';
+const OPENAI_API_KEY = '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';
 
 // Function to search for keywords in the files
 function searchFiles(query) {
@@ -91,7 +179,7 @@ function searchFiles(query) {
     return results;
 }
 
-app.post('/chat', async (req, res,next) => {
+app.post('/chat', async (req, res, next) => {
     const userMessage = req.body.message;
 
     // Check if the message is a search query
@@ -127,6 +215,12 @@ app.post('/chat', async (req, res,next) => {
     }
     next();
 });
+
+
+
+// Serve uploaded files statically
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 mongoConnect(() => {
     app.listen(8080);
