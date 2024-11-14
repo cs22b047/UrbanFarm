@@ -161,7 +161,7 @@ app.use('/register-user', (req, res, next) => {
 
 //chat bot
 
-const OPENAI_API_KEY = '';
+const OPENAI_API_KEY = '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';
 
 // Function to search for keywords in the files
 function searchFiles(query) {
@@ -212,11 +212,11 @@ app.post('/chat', async (req, res, next) => {
                 'Content-Type': 'application/json',
             },
         });
-
+    
         const botResponse = response.data.choices[0].message.content;
         res.json({ reply: botResponse });
     } catch (error) {
-        console.error('Error calling OpenAI API:', error);
+        console.error('Error calling OpenAI API:', error.response ? error.response.data : error.message);
         res.status(500).json({ reply: 'Sorry, something went wrong. Please try again later.' });
     }
     next();

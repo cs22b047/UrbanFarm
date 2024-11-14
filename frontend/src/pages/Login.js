@@ -60,7 +60,7 @@ export default function Login({ setToken }) {
                 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet" />
             </head>
             <h1 className='text-center mt-56' style={{ fontFamily: "Roboto", fontWeight: "700", fontStyle: "normal" }}>WELCOME</h1>
-            <form className='w-1/4 mx-auto' onSubmit={handleLogin} style={{ display: (registerState ? "none" : "") }}>
+            <form className='w-[95%] md:w-1/4 mx-auto' onSubmit={handleLogin} style={{ display: (registerState ? "none" : "") }}>
                 <input type="text" placeholder="username" className="w-full rounded-md border-gray-100 p-3 mt-4 mb-3 box-border" onChange={e => setUserName(e.target.value)} required />
                 <input type="password" placeholder="password" className="w-full rounded-md border-gray-100 p-3 box-border mb-3" onChange={e => setPassword(e.target.value)} required />
                 <button type="submit" className='rounded-md w-full mx-auto border-0  h-[35px] p-3 bg-green-500'>Login</button>

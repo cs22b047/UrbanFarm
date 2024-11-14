@@ -63,7 +63,7 @@ const Blog = () => {
     };
     return (
         <>
-            <div className="flex justify-center">
+            <div className="flex mt-28 justify-center">
                 <div className="relative w-full flex mx-5">
                     <FontAwesomeIcon
                         icon={faSearch}

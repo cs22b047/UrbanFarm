@@ -41,7 +41,7 @@ const PlantList = () => {
   }
 
   return (
-    <div className="flex w-3/4">
+    <div className="flex mt-20 w-3/4">
       <h1></h1>
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4 mx-20">
         {plants.map((plant) => (

@@ -5,8 +5,9 @@ import WeatherComponent from '../components/WeatherAPI';
 const Dashboard = () => {
     return (
         <>
-            <div className='m-10 flex'>
-                <WeatherComponent></WeatherComponent>
+
+            <div className='m-10 flex flex-col md:flex-row'>
+                {/* <WeatherComponent></WeatherComponent> */}
                 <PlantList></PlantList>
             </div>
         </>
