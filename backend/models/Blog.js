@@ -2,10 +2,10 @@
     const { ObjectId } = require('mongodb');
 
     class Blog {
-        constructor(title, content, photoPath, author, createdAt = new Date()) {
+        constructor(title, content, photolink, author, createdAt = new Date()) {
             this.title = title;
             this.content = content;
-            this.photoPath = photoPath;
+            this.photolink = photolink;
             this.author = author;
             this.createdAt = createdAt;
         }
@@ -16,7 +16,7 @@
             return db.collection('blogs').insertOne({
                 title: this.title,
                 content: this.content,
-                photoPath: this.photoPath,
+                photolink: this.photolink,
                 author: this.author,
                 createdAt: this.createdAt
             });

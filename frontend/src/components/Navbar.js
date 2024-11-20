@@ -1,59 +1,54 @@
 import React, { useState } from 'react';
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 import logo from '../assets/logo.png';
 
-
 const Navbar = (props) => {
-    // State to manage the navbar's visibility
     const [nav, setNav] = useState(false);
+    const location = useLocation(); // Hook to get the current path
 
     // Toggle function to handle the navbar's display
     const handleNav = () => {
         setNav(!nav);
     };
-    {/* <nav className="main-nav flex justify-between mx-10">
-        <img src={logo} alt="logo.png" className='w-48 my-5'></img>
-        <ul class="main-nav-list">
-          <li><Link to='/'><a class="main-nav-link" href="#pricing">Dashboard</a></Link></li>
-          <li><Link to='/upload_image'><a class="main-nav-link" href="#how">Design Farm</a></Link></li>
-          <li><Link to='/ar'><a class="main-nav-link" href="#how">Augumented Reality</a></Link></li>
-          <li><Link to='/blogs'><a class="main-nav-link" href="#how">Blogs</a></Link></li>
-          <li><button className='border-[1px] w-fit h-fit rounded-md border-black px-4 py-2 bg-green-500 hover:bg-green-400'><a class="text-black text-[14px] no-underline font-bold" href="#clt" onClick={() => deleteToken()}>Log out</a></button></li>
-        </ul>
-      </nav> */}
+
     // Array containing navigation items
     const navItems = [
         { id: 1, text: 'Dashboard', path: '/' },
-        { id: 2, text: 'Design Farm', pat: '/upload_image' },
-        { id: 3, text: 'Augumented Reality', path: '/ar' },
-        { id: 4, text: 'Blogs', path: 'blogs' },
+        { id: 2, text: 'Design Farm', path: '/upload_image' },
+        { id: 3, text: 'Augmented Reality', path: '/ar' },
+        { id: 4, text: 'Blogs', path: '/blogs' },
     ];
 
     return (
-        <div className='flex bg-white z-30 fixed top-0 w-full  justify-between items-center h-24 text-black'>
+        <div className='flex bg-white z-30 fixed top-0 w-full justify-between items-center h-24 text-black'>
             {/* Logo */}
-            <img src={logo} alt="logo.png" className='w-48 mx-4 my-5'></img>
+            <img src={logo} alt="logo.png" className='w-48 mx-4 my-5' />
 
             {/* Desktop Navigation */}
             <ul className='hidden list-none md:flex'>
-                {navItems.map(item => (
-                    <Link to={item.path} className='no-underline text-black '>
+                {navItems.map((item) => (
+                    <Link to={item.path} className='no-underline text-black' key={item.id}>
                         <li
-                            key={item.id}
-                            className='p-4 w-fit hover:bg-green-500 rounded-xl m-2 cursor-pointer duration-300 hover:text-black'
+                            className={`p-4 w-fit rounded-xl m-2 cursor-pointer duration-300 ${location.pathname === item.path ? 'text-green-500 font-bold' : 'hover:text-green-500'
+                                }`}
                         >
-
                             {item.text}
                         </li>
                     </Link>
-
                 ))}
                 <li
-                    className='p-4 w-fit hover:bg-red-400 rounded-xl m-2 cursor-pointer duration-300 hover:text-black'
+                            className={`p-4 w-fit rounded-xl cursor-pointer duration-300`}
                     onClick={() => props.deleteToken()}
                 >
-                    Log out
+                    <FontAwesomeIcon icon={faUser} size='lg' className='mx-2 mt-1'></FontAwesomeIcon>
+                    {/* <button className="px-4 py-2 bg-red-500 text-black border-[1px] font-semibold rounded-lg hover:bg-red-600">
+
+                        Log out
+
+                    </button> */}
                 </li>
             </ul>
 
@@ -71,17 +66,15 @@ const Navbar = (props) => {
                 }
             >
                 {/* Mobile Logo */}
-                <h1 className='w-full text-3xl font-bold text-[#00df9a] m-4'>REACT.</h1>
+                <h1 className='w-full text-3xl font-bold text-[#00df9a] m-4'>UrbanFarm</h1>
 
                 {/* Mobile Navigation Items */}
-                {navItems.map(item => (
-
-                    <Link to={item.path} className='no-underline text-white '>
+                {navItems.map((item) => (
+                    <Link to={item.path} className='no-underline text-white' key={item.id}>
                         <li
-                            key={item.id}
-                            className='p-4 w-fit hover:bg-green-500 rounded-xl m-2 cursor-pointer duration-300 hover:text-black'
+                            className={`p-4 w-fit rounded-xl m-2 cursor-pointer duration-300 ${location.pathname === item.path ? 'bg-green-500 text-black' : 'hover:bg-green-500'
+                                }`}
                         >
-
                             {item.text}
                         </li>
                     </Link>

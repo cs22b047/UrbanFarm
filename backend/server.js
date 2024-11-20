@@ -48,29 +48,28 @@ app.get('/plants', async (req, res) => {
     }
 });
 
-// Set up multer for file upload
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');  // Specify the folder to store images
-    },
-    filename: (req, file, cb) => {
-        const uniqueName = uuidv4() + path.extname(file.originalname); // Generate unique filename
-        cb(null, uniqueName);  // Save file with unique name
-    }
-});
+// // Set up multer for file upload
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, 'uploads/');  // Specify the folder to store images
+//     },
+//     filename: (req, file, cb) => {
+//         const uniqueName = uuidv4() + path.extname(file.originalname); // Generate unique filename
+//         cb(null, uniqueName);  // Save file with unique name
+//     }
+// });
 
-const upload = multer({ storage: storage });
+// const upload = multer({ storage: storage });
 
 // Add blog route (with file upload)
-app.post('/add-blog', upload.single('photo'), (req, res) => {
-    const { title, content, author } = req.body;
-    const photoPath = req.file ? `/uploads/${req.file.filename}` : null;
+app.post('/add-blog', (req, res) => {
+    const { title, content, author, photolink } = req.body;
 
-    if (!title || !content || !photoPath) {
+    if (!title || !content || !photolink) {
         return res.status(400).json({ message: 'Title, content, and photo are required.' });
     }
 
-    const blog = new Blog(title, content, photoPath, author);
+    const blog = new Blog(title, content, photolink, author);
     blog.save()
         .then(result => {
             res.json({ message: 'Blog created successfully!' });

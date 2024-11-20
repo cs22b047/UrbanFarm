@@ -23,30 +23,55 @@ const Blog = () => {
                 console.error("Error fetching blogs:", error);
             }
         };
-
         fetchBlogs();
     }, [searchQuery]);
 
     // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Create a FormData object to hold the form data
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('content', content);
-        formData.append('author', sessionStorage.getItem('token').split('#')[1].slice(0,-1));
+    
+        let photoUrl = '';
+    
+        // Check if a photo is selected
         if (photo) {
-            formData.append('photo', photo);
+            const formData = new FormData();
+            formData.append('file', photo)
+            formData.append('upload_preset', 'my_preset'); // Replace with your Cloudinary upload preset
+    
+            try {
+                // Upload photo to Cloudinary
+                const response = await axios.post(
+                    'https://api.cloudinary.com/v1_1/db4hnhtfx/image/upload', // Replace 'your_cloud_name' with your Cloudinary cloud name
+                    formData
+                );
+    
+                // Get the URL of the uploaded image
+                photoUrl = response.data.secure_url;
+            } catch (error) {
+                console.error('Error uploading to Cloudinary:', error);
+                alert('An error occurred while uploading the image. Please try again.');
+                return;
+            }
         }
-
+    
         try {
-            // Replace 'your-backend-url' with the actual backend URL
+            // Create the blog object to send to the backend
+            const blogData = {
+                title,
+                content,
+                author: sessionStorage.getItem('token').split('#')[1].slice(0,-1),
+                photolink: photoUrl, // Send the Cloudinary photo URL
+            };
+    
+            // Send blog data to your backend
             const response = await fetch('http://localhost:8080/add-blog', {
                 method: 'POST',
-                body: formData,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(blogData),
             });
-
+    
             if (response.ok) {
                 alert('Blog published successfully!');
                 // Reset form
@@ -61,6 +86,7 @@ const Blog = () => {
             alert('An error occurred. Please try again.');
         }
     };
+    
     return (
         <>
             <div className="flex mt-28 justify-center">
@@ -138,7 +164,7 @@ const Blog = () => {
                             onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                         >
 
-                            <img src={`http://localhost:8080${blog.photoPath}`} alt="Blog" className="w-full h-40 object-cover rounded-lg mb-4" />
+                            <img src={blog.photolink} alt="Blog" className="w-full h-40 object-cover rounded-lg mb-4" />
                             <h3 className="text-lg font-semibold mb-2">{blog.title}</h3>
                             <p className="text-gray-600">{blog.content.slice(0, 100)}...</p>
                             <p className='text-gray-600 text-sm '>Author: {blog.author}</p>
