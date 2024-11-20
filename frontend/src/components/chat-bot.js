@@ -27,7 +27,7 @@ const Chatbot = () => {
             setUserInput('');
 
             // Simulate an API call
-            fetch('http://localhost:8080/chat', {
+            fetch('https://urbanfarm.onrender.comchat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message }),

@@ -17,7 +17,7 @@ const Blog = () => {
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/blogs?search=${searchQuery}`);
+                const response = await axios.get(`https://urbanfarm.onrender.comblogs?search=${searchQuery}`);
                 setBlogs(response.data);
             } catch (error) {
                 console.error("Error fetching blogs:", error);
@@ -64,7 +64,7 @@ const Blog = () => {
             };
     
             // Send blog data to your backend
-            const response = await fetch('http://localhost:8080/add-blog', {
+            const response = await fetch('https://urbanfarm.onrender.comadd-blog', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

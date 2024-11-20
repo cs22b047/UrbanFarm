@@ -11,7 +11,7 @@ const PlantList = () => {
   useEffect(() => {
     const fetchPlants = async () => {
       try {
-        const response = await fetch('http://localhost:8080/plants'); // Assuming your Node.js server is running on the same domain
+        const response = await fetch('https://urbanfarm.onrender.complants'); // Assuming your Node.js server is running on the same domain
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

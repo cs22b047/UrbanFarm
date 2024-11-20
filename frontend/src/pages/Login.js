@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 
 async function loginUser(credentials) {
-    return fetch('http://localhost:8080/auth-user', {
+    return fetch('https://urbanfarm.onrender.comauth-user', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -14,7 +14,7 @@ async function loginUser(credentials) {
 }
 
 async function registerUser(credentials) {
-    return fetch('http://localhost:8080/register-user', {
+    return fetch('https://urbanfarm.onrender.comregister-user', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

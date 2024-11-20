@@ -10,7 +10,7 @@ const BlogDetail = () => {
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/get-blog?id=${window.location.pathname.split('/blog/')[1]}`);
+                const response = await fetch(`https://urbanfarm.onrender.comget-blog?id=${window.location.pathname.split('/blog/')[1]}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
